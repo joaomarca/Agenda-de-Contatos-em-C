@@ -1,2 +1,0 @@
-/usr/bin/ar qc libagenda.a CMakeFiles/agenda.dir/src/agenda.c.o
-/usr/bin/ranlib libagenda.a

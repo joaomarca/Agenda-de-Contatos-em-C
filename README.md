@@ -23,11 +23,38 @@ Sistema de gerenciamento de contatos em C, com armazenamento em arquivo de texto
 ```
 
 ## 🚀 Como Executar
-1. Clone este repositório: `git clone https://github.com/joaomarca/Agenda-de-Contatos-em-C`
-2. cd Agenda-de-Contatos-em-C && mkdir build && cd build
-3. cmake ..
-4. make
-5. ./main
+
+### Linux / macOS
+```bash
+# Clone o repositório
+git clone https://github.com/joaomarca/Agenda-de-Contatos-em-C.git
+cd Agenda-de-Contatos-em-C
+
+# Criar pasta de build e compilar
+mkdir build && cd build
+cmake ..
+make
+
+# Executar o programa
+./main
+```
+
+### Windows (Powershell)
+```powershell
+# Clone o repositório
+git clone https://github.com/joaomarca/Agenda-de-Contatos-em-C.git
+cd Agenda-de-Contatos-em-C
+
+# Criar pasta de build e compilar
+mkdir build
+cd build
+cmake ..
+cmake --build .
+
+# Executar o programa
+.\main.exe
+```
+
 
 ## 📝 Observações
 - O arquivo contatos.txt salva os dados de forma persistente.

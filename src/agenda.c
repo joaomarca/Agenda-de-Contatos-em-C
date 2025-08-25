@@ -3,18 +3,7 @@
 #include <stdlib.h>
 #include <sys/stat.h>
 #include <ctype.h>
-
-void normalizarString(char *dest, const char *src);
-void adicionarContato(char nome[], char email[], int numero);
-void listarContatos();
-void buscarContato(char nomeProcurado[]);
-void removerContato(char nomeProcurado[]);
-void sair();
-
-int main() {
-    return 0;
-}
-
+#include "../include/agenda.h"
 
 void normalizarString(char *dest, const char *src) {
     while (*src) {
@@ -27,7 +16,7 @@ void normalizarString(char *dest, const char *src) {
     *dest = '\0';
 }
 
-void adicionarContato(char nome[], char email[], int numero) {
+void adicionarContato(char nome[], char email[], char numero[]) {
     FILE *f = fopen("contatos.txt", "a+");
     if (f == NULL) {
         printf("Erro ao abrir arquivo contatos.txt\n");
@@ -39,13 +28,16 @@ void adicionarContato(char nome[], char email[], int numero) {
     stat("contatos.txt", &file_info);
 
     if (file_info.st_size == 0) {
+        remove("contatos.txt");
+        f = fopen("contatos.txt", "w");
         fprintf(f, "Nome,Email,Numero\n");
-        fprintf(f, "%s,%s,%d", nome, email, numero);
+        fprintf(f, "%s,%s,%s", nome, email, numero);
         fclose(f);
         return;
     }
 
-    fprintf(f, "\n%s,%s,%d", nome, email, numero);
+    fprintf(f, "\n%s,%s,%s", nome, email, numero);
+    printf("\nContato adicionado!\n");
     fclose(f);
 }
 
@@ -67,18 +59,33 @@ void listarContatos() {
     }
 
     char buffer[150];
+    int encontrado = 0;
+
+    printf("\nListando contatos..\n\n");
 
     while (fgets(buffer, sizeof(buffer), f)) {
         buffer[strcspn(buffer, "\n")] = 0;
+        if (strlen(buffer) == 0) {
+            continue;
+        }
+        if (strcmp(buffer, "Nome,Email,Numero") == 0) {
+            continue;
+        }
+
         char *nome = strtok(buffer, ",");
         char *email = strtok(NULL, ",");
         char *numero = strtok(NULL, ",");
 
         if (nome && email && numero) {
+            encontrado = 1;
             printf("\nNome: %s\n", nome);
             printf("Email: %s\n", email);
             printf("Numero: %s\n", numero);
         }
+    }
+
+    if (!encontrado) {
+        printf("Nenhum contato encontrado!");
     }
 
     fclose(f);
@@ -101,6 +108,8 @@ void buscarContato(char nomeProcurado[]) {
         return;
     }
 
+    printf("Buscando contato..\n\n");
+
     char buffer[150];
     char nomeSanitizado[100];
     char procuradoSanitizado[100];
@@ -110,7 +119,16 @@ void buscarContato(char nomeProcurado[]) {
 
     while (fgets(buffer, sizeof(buffer), f)) {
         buffer[strcspn(buffer, "\n")] = 0;
-        char *nome = strtok(buffer, ",");
+        if (strlen(buffer) == 0) {
+            continue;
+        }
+        if (strcmp(buffer, "Nome,Email,Numero") == 0) {
+            continue;
+        }
+
+        char analise[150];
+        strcpy(analise, buffer);
+        char *nome = strtok(analise, ",");
 
         if (nome) {
             normalizarString(nomeSanitizado, nome);
@@ -157,6 +175,8 @@ void removerContato(char nomeProcurado[]) {
         return;
     }
 
+    printf("\nRemovendo contato..\n\n");
+
     char buffer[150];
     char nomeSanitizado[100];
     char procuradoSanitizado[100];
@@ -166,10 +186,19 @@ void removerContato(char nomeProcurado[]) {
 
     while (fgets(buffer, sizeof(buffer), f)) {
         buffer[strcspn(buffer, "\n")] = 0;
-        char linha[150];
-        strcpy(linha, buffer);
+        if (strlen(buffer) == 0) {
+            continue;
+        }
+        if (strcmp(buffer, "Nome,Email,Numero") == 0) {
+            continue;
+        }
 
-        char *nome = strtok(buffer, ",");
+        char linha[150];
+        char analise[150];
+        strcpy(linha, buffer);
+        strcpy(analise, buffer);
+
+        char *nome = strtok(analise, ",");
 
         if (nome) {
             normalizarString(nomeSanitizado, nome);

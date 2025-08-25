@@ -1,0 +1,4 @@
+/home/chico/Documentos/GitHubRepos/Agenda-de-Contatos-em-C/build/CMakeFiles/agenda.dir
+/home/chico/Documentos/GitHubRepos/Agenda-de-Contatos-em-C/build/CMakeFiles/main.dir
+/home/chico/Documentos/GitHubRepos/Agenda-de-Contatos-em-C/build/CMakeFiles/edit_cache.dir
+/home/chico/Documentos/GitHubRepos/Agenda-de-Contatos-em-C/build/CMakeFiles/rebuild_cache.dir
